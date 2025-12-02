@@ -2,735 +2,507 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>IMSS BCS – Plazas Médicas Vacantes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simulador HTRNL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * {
       box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #0f766e, #020617 55%);
-      color: #f9fafb;
+      padding: 0;
+      background: #f3f4f6;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      padding: 16px;
     }
 
-    .frame {
+    .app {
+      background: #ffffff;
+      max-width: 480px;
       width: 100%;
-      max-width: 1100px;
-      background: rgba(15, 23, 42, 0.96);
-      border-radius: 24px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.55);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
-      padding-bottom: 10px;
-    }
-
-    .header-left {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .badge {
-      font-size: 11px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: #a5b4fc;
-    }
-
-    .title {
-      font-size: clamp(18px, 2.3vw, 22px);
-      font-weight: 700;
+    h1 {
+      margin-top: 0;
+      margin-bottom: 4px;
+      font-size: 1.4rem;
+      text-align: center;
+      color: #111827;
     }
 
     .subtitle {
-      font-size: 13px;
-      color: #cbd5f5;
+      margin: 0 0 16px;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #6b7280;
     }
 
-    .header-right {
-      text-align: right;
-      font-size: 11px;
+    .steps-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      transition: all 0.2s ease;
+    }
+
+    .step-dot.active {
+      width: 24px;
+      background: #2563eb;
+    }
+
+    .step {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .field-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+
+    .hint {
+      font-size: 0.75rem;
       color: #9ca3af;
+      margin-top: 2px;
     }
 
-    .chip {
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      background: #f9fafb;
+    }
+
+    input[type="number"]:focus,
+    input[type="text"]:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+      background: #ffffff;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(34, 197, 94, 0.1);
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      color: #bbf7d0;
-      font-size: 11px;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
     }
 
-    .chip-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+    button:active {
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
-    .slide-shell {
-      position: relative;
-      border-radius: 20px;
-      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.12), rgba(15, 23, 42, 0.9));
-      padding: 18px;
-      overflow: hidden;
-      min-height: 320px;
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #374151;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
+      flex: 1;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+      box-shadow: 0 1px 5px rgba(37, 99, 235, 0.4);
+      flex: 1.2;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .resume-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid #e5e7eb;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+
+    .resume-row {
       display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .slide {
-      display: none;
-    }
-
-    .slide.active {
-      display: grid;
-    }
-
-    .slide-1 {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
-      gap: 20px;
-      align-items: center;
-    }
-
-    .slide-2, .slide-3, .slide-4, .slide-5, .slide-6 {
-      grid-template-columns: minmax(0, 2.5fr) minmax(0, 2.2fr);
-      gap: 20px;
-      align-items: start;
-    }
-
-    .slide-main-title {
-      font-size: clamp(24px, 3vw, 30px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
+      justify-content: space-between;
       margin-bottom: 6px;
     }
 
-    .highlight {
-      background: linear-gradient(to right, #22c55e, #2dd4bf);
-      -webkit-background-clip: text;
-      color: transparent;
+    .resume-label {
+      color: #6b7280;
     }
 
-    .bullet {
-      font-size: 14px;
-      color: #e5e7eb;
-      margin-bottom: 4px;
+    .resume-value {
+      font-weight: 600;
+      color: #111827;
     }
 
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+    .result {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      background: #eff6ff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+    }
+
+    .error {
       margin-top: 8px;
-    }
-
-    .pill {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      color: #e5e7eb;
-      background: rgba(15, 23, 42, 0.6);
-    }
-
-    .card-outline {
-      border-radius: 16px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.15), rgba(15, 23, 42, 0.9));
-      padding: 12px 14px;
-      font-size: 12px;
-      color: #e5e7eb;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 4px;
-      font-size: 12px;
-    }
-
-    .table tr:not(:last-child) {
-      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
-    }
-
-    .table td {
-      padding: 4px 2px;
-    }
-
-    .table td:last-child {
-      text-align: right;
-      font-weight: 600;
-    }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(96, 165, 250, 0.6);
-      background: rgba(15, 23, 42, 0.8);
-      font-size: 11px;
-      color: #bfdbfe;
-    }
-
-    .tag-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #38bdf8;
-    }
-
-    .locations-grid {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .location-card {
-      border-radius: 12px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      padding: 8px 9px;
-      font-size: 12px;
-    }
-
-    .location-name {
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    .location-extra {
-      font-size: 11px;
-      color: #a5b4fc;
-    }
-
-    .vacancy-list {
-      list-style: none;
-      padding: 0;
-      margin: 6px 0 0;
-      font-size: 12px;
-      max-height: 190px;
-      overflow: auto;
-    }
-
-    .vacancy-list li {
-      padding: 4px 0;
-      border-bottom: 1px dashed rgba(148, 163, 184, 0.4);
-    }
-
-    .vacancy-list li:last-child {
-      border-bottom: none;
-    }
-
-    .vacancy-specialty {
-      font-weight: 600;
-    }
-
-    .vacancy-meta {
-      font-size: 11px;
-      color: #9ca3af;
-    }
-
-    .closing {
-      font-size: 14px;
-      color: #e5e7eb;
-      line-height: 1.5;
-    }
-
-    .closing-quote {
-      font-size: 13px;
-      color: #a5b4fc;
-      margin-top: 8px;
-      border-left: 2px solid rgba(129, 140, 248, 0.7);
-      padding-left: 10px;
-    }
-
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
-      color: #9ca3af;
-    }
-
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .progress-bar {
-      position: relative;
-      flex: 1;
-      height: 5px;
-      border-radius: 999px;
-      background: rgba(31, 41, 55, 0.9);
-      overflow: hidden;
-    }
-
-    .progress-inner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      border-radius: 999px;
-      background: linear-gradient(to right, #22c55e, #2dd4bf);
-      width: 0%;
-      transition: width 0.4s ease;
-    }
-
-    .controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 0.95);
-      color: #e5e7eb;
-      font-size: 11px;
-      padding: 6px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-    }
-
-    .btn[disabled] {
-      opacity: 0.4;
-      cursor: default;
-    }
-
-    .btn span {
-      font-size: 13px;
-    }
-
-    @media (max-width: 800px) {
-      .slide-1,
-      .slide-2,
-      .slide-3,
-      .slide-4,
-      .slide-5,
-      .slide-6 {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .frame {
-        padding: 14px;
-      }
-      .slide-shell {
-        padding: 14px;
-      }
-      .locations-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
+      font-size: 0.8rem;
+      color: #b91c1c;
     }
   </style>
 </head>
 <body>
-  <div class="frame">
-    <!-- Encabezado -->
-    <header class="header">
-      <div class="header-left">
-        <div class="badge">IMSS BCS · Reclutamiento Médicos Especialistas</div>
-        <div class="title">Oportunidades en hospitales y unidades del estado</div>
-        <div class="subtitle">Plazas vacantes en La Paz, Los Cabos, Ciudad Constitución, Guerrero Negro e Isla de Cedros.</div>
+  <div class="app">
+    <h1>Simulador HTRNL</h1>
+    <p class="subtitle">Captura tu información y revisa tu resumen. El ingreso mensual se usa tal cual lo ingresas (neto).</p>
+
+    <div class="steps-indicator">
+      <div class="step-dot active" data-step-dot="1"></div>
+      <div class="step-dot" data-step-dot="2"></div>
+      <div class="step-dot" data-step-dot="3"></div>
+    </div>
+
+    <!-- PASO 1: Datos básicos -->
+    <section class="step active" data-step="1">
+      <div class="field-group">
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" placeholder="Ej. Moisés Beltrán" />
+        <p class="hint">Opcional, solo para personalizar tu reporte.</p>
       </div>
-      <div class="header-right">
-        <div class="chip">
-          <span class="chip-dot"></span>
-          Convocatoria activa
-        </div>
-        <div>Departamento de Personal · OOAD Baja California Sur</div>
+
+      <div class="field-group">
+        <label for="edad">Edad actual</label>
+        <input type="number" id="edad" min="18" max="90" placeholder="Ej. 40" />
       </div>
-    </header>
 
-    <!-- Contenedor de diapositivas -->
-    <section class="slide-shell">
-      <!-- Slide 1 – Portada -->
-      <article class="slide slide-1 active">
-        <div>
-          <div class="slide-main-title">
-            Únete al <span class="highlight">equipo de especialistas</span> del IMSS BCS
-          </div>
-          <div class="bullet">
-            Plazas para especialistas en Medicina Interna, Pediatría, Ginecología y Obstetricia, Urgencias, Radiodiagnóstico, Traumatología y más.
-          </div>
-          <div class="bullet">
-            Cobertura en las principales zonas del estado: La Paz, Ciudad Constitución, Los Cabos, Guerrero Negro e Isla de Cedros.
-          </div>
-          <div class="pill-row">
-            <span class="pill">Estabilidad laboral</span>
-            <span class="pill">Zona con calidad de vida</span>
-            <span class="pill">Crecimiento profesional</span>
-            <span class="pill">Playas, naturaleza y tranquilidad</span>
-          </div>
-        </div>
-        <div class="card-outline">
-          <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">
-            Ingreso mensual aproximado como médico especialista
-          </div>
-          <table class="table">
-            <tbody>
-              <tr>
-                <td>Sueldo tabular</td>
-                <td>$12,844.20</td>
-              </tr>
-              <tr>
-                <td>Ayuda de renta (cláusula 63 Bis B)</td>
-                <td>$10,551.52</td>
-              </tr>
-              <tr>
-                <td>Concepto 15</td>
-                <td>$11,697.86</td>
-              </tr>
-              <tr>
-                <td>Sobresueldo zona aislada</td>
-                <td>$4,679.14</td>
-              </tr>
-              <tr>
-                <td>Estímulos (asistencia y puntualidad)</td>
-                <td>$14,544.30</td>
-              </tr>
-              <tr>
-                <td>Atención Integral Continua</td>
-                <td>$3,860.30</td>
-              </tr>
-              <tr>
-                <td>Otros bonos y ayudas</td>
-                <td>$5,619.56</td>
-              </tr>
-            </tbody>
-          </table>
-          <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:12px;">
-            <span>Total estimado bruto mensual</span>
-            <span style="font-weight:700; color:#4ade80;">≈ $63,800.00</span>
-          </div>
-          <div style="font-size:11px; color:#9ca3af; margin-top:4px;">
-            *Cifras aproximadas, sujetas a normativa vigente, prestaciones y percepción individual.
-          </div>
-        </div>
-      </article>
-
-      <!-- Slide 2 – Beneficios -->
-      <article class="slide slide-2">
-        <div>
-          <div class="slide-main-title">
-            Beneficios y <span class="highlight">prestaciones institucionales</span>
-          </div>
-          <div class="bullet">Ser parte del IMSS implica seguridad social, antigüedad, formación continua y pertenecer a un equipo multidisciplinario.</div>
-          <ul style="margin:10px 0 0; padding-left:16px; font-size:13px; color:#e5e7eb;">
-            <li>✔ Prestaciones de ley y superiores (IMSS, INFONAVIT, aguinaldo, vacaciones, prima vacacional).</li>
-            <li>✔ Estímulos por asistencia, puntualidad y productividad de acuerdo con normativa.</li>
-            <li>✔ Apoyos por zona aislada y consideraciones especiales según adscripción.</li>
-            <li>✔ Oportunidades de desarrollo académico y participación en programas especiales.</li>
-            <li>✔ Entorno de trabajo estable, con estructura y apoyo institucional.</li>
-          </ul>
-          <div class="closing-quote">
-            “Buscamos especialistas comprometidos con la atención integral y la calidad de vida de nuestras y nuestros derechohabientes en Baja California Sur.”
-          </div>
-        </div>
-        <div class="card-outline">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-weight:600; font-size:13px;">¿Qué perfiles buscamos?</span>
-            <span class="tag"><span class="tag-dot"></span> Especialistas clave</span>
-          </div>
-          <ul style="margin:0; padding-left:16px; font-size:12px;">
-            <li>Medicina Interna</li>
-            <li>Pediatría Médica y Urgencias Pediátricas</li>
-            <li>Ginecología y Obstetricia</li>
-            <li>Urgencias y Terapia Intensiva</li>
-            <li>Cirugía General, Traumatología y Ortopedia</li>
-            <li>Radiodiagnóstico y áreas de apoyo diagnóstico</li>
-            <li>Otras subespecialidades contempladas en la convocatoria</li>
-          </ul>
-          <div style="font-size:11px; color:#9ca3af; margin-top:6px;">
-            La disponibilidad específica de plazas por especialidad se detalla por unidad y localidad.
-          </div>
-        </div>
-      </article>
-
-      <!-- Slide 3 – Zonas del estado -->
-      <article class="slide slide-3">
-        <div>
-          <div class="slide-main-title">
-            Zonas de trabajo en <span class="highlight">Baja California Sur</span>
-          </div>
-          <div class="bullet">
-            El OOAD IMSS BCS cuenta con hospitales generales, hospitales de subzona y unidades de medicina familiar distribuidos en todo el estado.
-          </div>
-          <div class="locations-grid" style="margin-top:10px;">
-            <div class="location-card">
-              <div class="location-name">La Paz</div>
-              <div>Hospital General de Zona con Medicina Familiar y UMF 34.</div>
-              <div class="location-extra">Capital del estado · Malecón, Balandra, vida tranquila.</div>
-            </div>
-            <div class="location-card">
-              <div class="location-name">Ciudad Constitución</div>
-              <div>Hospital General de Subzona y servicios a la zona agrícola del Valle.</div>
-              <div class="location-extra">Proximidad a Bahía Magdalena.</div>
-            </div>
-            <div class="location-card">
-              <div class="location-name">Guerrero Negro</div>
-              <div>Hospital de Subzona que atiende población en zona aislada.</div>
-              <div class="location-extra">Santuario de la ballena gris.</div>
-            </div>
-            <div class="location-card">
-              <div class="location-name">Isla de Cedros</div>
-              <div>Hospital General de Subzona en contexto de aislamiento geográfico.</div>
-              <div class="location-extra">Apoyos y consideraciones de zona aislada.</div>
-            </div>
-            <div class="location-card">
-              <div class="location-name">Cabo San Lucas</div>
-              <div>Hospital General de Subzona con alta demanda turística y de urgencias.</div>
-              <div class="location-extra">Destino internacional de playa.</div>
-            </div>
-            <div class="location-card">
-              <div class="location-name">San José del Cabo</div>
-              <div>Hospital General de Subzona que brinda servicio a la población de Los Cabos.</div>
-              <div class="location-extra">Centro histórico y ambiente cultural.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-outline">
-          <div style="font-weight:600; font-size:13px; margin-bottom:4px;">¿Qué ofrece BCS al médico especialista?</div>
-          <ul style="margin:0; padding-left:16px; font-size:12px;">
-            <li>Equilibrio entre práctica hospitalaria y calidad de vida.</li>
-            <li>Entornos naturales únicos: mar, desierto, áreas protegidas.</li>
-            <li>Comunidades más pequeñas, con trato cercano y sentido de pertenencia.</li>
-            <li>Oportunidades de arraigo para la familia en contextos tranquilos.</li>
-          </ul>
-        </div>
-      </article>
-
-      <!-- Slide 4 – Plazas por La Paz / Constitución -->
-      <article class="slide slide-4">
-        <div>
-          <div class="slide-main-title">
-            Plazas en <span class="highlight">La Paz y Ciudad Constitución</span>
-          </div>
-          <div class="bullet">
-            Ejemplo de especialidades clave en la zona centro del estado. Puedes adaptar y actualizar esta lista conforme a la convocatoria oficial.
-          </div>
-          <ul class="vacancy-list">
-            <li>
-              <div class="vacancy-specialty">La Paz – Hospital General de Zona con MF No. 1</div>
-              <div class="vacancy-meta">Radiodiagnóstico · OTROS TURNOS</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">La Paz – Hospital General de Zona con MF No. 1</div>
-              <div class="vacancy-meta">Oncología Quirúrgica · Matutino</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">La Paz – Hospital General de Zona con MF No. 1</div>
-              <div class="vacancy-meta">Otorrinolaringología · Vespertino</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">La Paz – Hospital General de Zona con MF No. 1</div>
-              <div class="vacancy-meta">Oftalmología · Matutino</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">La Paz – UMF 34</div>
-              <div class="vacancy-meta">Endoscopía · Vespertino</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">Ciudad Constitución – Hospital General de Subzona con MF No. 2</div>
-              <div class="vacancy-meta">Urgencias · Matutino / Vespertino / Nocturno</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">Ciudad Constitución – Hospital General de Subzona con MF No. 2</div>
-              <div class="vacancy-meta">Otorrinolaringología · Matutino</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">Ciudad Constitución – Hospital General de Subzona con MF No. 2</div>
-              <div class="vacancy-meta">Ginecología y Obstetricia · Matutino / Vespertino</div>
-            </li>
-          </ul>
-        </div>
-        <div class="card-outline">
-          <div style="font-weight:600; font-size:13px;">Sugerencia de uso en presentación</div>
-          <div style="font-size:12px;">
-            <p>• Puedes adaptar esta lista y convertirla en diapositivas para proyectar en reclutamientos presenciales.</p>
-            <p>• Cada renglón puede corresponder a una plaza del concentrado oficial con folio, unidad, especialidad, turno y observaciones.</p>
-            <p>• Si actualizas las plazas, solo edita este bloque de código en GitHub y la liga se actualizará automáticamente.</p>
-          </div>
-        </div>
-      </article>
-
-      <!-- Slide 5 – Plazas en zona foránea -->
-      <article class="slide slide-5">
-        <div>
-          <div class="slide-main-title">
-            Plazas en <span class="highlight">Guerrero Negro e Isla de Cedros</span>
-          </div>
-          <div class="bullet">
-            Zonas catalogadas como aisladas, con incentivos y retos clínicos interesantes para quienes buscan una experiencia distinta.
-          </div>
-          <ul class="vacancy-list">
-            <li>
-              <div class="vacancy-specialty">Guerrero Negro – Hospital General de Subzona con MF</div>
-              <div class="vacancy-meta">Medicina Interna · Turnos a definir según necesidad.</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">Guerrero Negro – Hospital General de Subzona con MF</div>
-              <div class="vacancy-meta">Pediatría Médica</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">Guerrero Negro – Hospital General de Subzona con MF</div>
-              <div class="vacancy-meta">Urgencias</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">Isla de Cedros – Hospital General de Subzona</div>
-              <div class="vacancy-meta">Ginecología y Obstetricia · Vespertino</div>
-            </li>
-            <li>
-              <div class="vacancy-specialty">Isla de Cedros – Hospital General de Subzona</div>
-              <div class="vacancy-meta">Pediatría Médica · Matutino</div>
-            </li>
-          </ul>
-        </div>
-        <div class="card-outline">
-          <div style="font-weight:600; font-size:13px; margin-bottom:4px;">Puntos clave a comentar con los postulantes</div>
-          <ul style="margin:0; padding-left:16px; font-size:12px;">
-            <li>Apoyos por zona aislada y condiciones especiales de trabajo.</li>
-            <li>Importancia estratégica de estas unidades en la red de servicios de salud.</li>
-            <li>Posibilidad de consolidar antigüedad y desarrollo profesional en contextos de alta necesidad.</li>
-          </ul>
-        </div>
-      </article>
-
-      <!-- Slide 6 – Cierre -->
-      <article class="slide slide-6">
-        <div>
-          <div class="slide-main-title">
-            Próximos pasos para <span class="highlight">postular</span>
-          </div>
-          <div class="closing">
-            <p>Para recibir información detallada de requisitos, fechas, documentación y plazas específicas por especialidad y unidad, las y los interesados deberán acercarse al Departamento de Personal del OOAD Baja California Sur.</p>
-            <p>Esta herramienta está diseñada como apoyo visual para sesiones informativas y reclutamientos, y puede actualizarse fácilmente en línea conforme se emitan nuevas plazas o se cubran vacantes.</p>
-          </div>
-          <div class="closing-quote">
-            “Tu siguiente paso profesional puede estar en Baja California Sur. Comparte esta liga con colegas interesados en sumarse al IMSS.”
-          </div>
-        </div>
-        <div class="card-outline">
-          <div style="font-weight:600; font-size:13px; margin-bottom:4px;">Tips de uso de esta liga</div>
-          <ul style="margin:0; padding-left:16px; font-size:12px;">
-            <li>Proyecta la presentación directamente desde la liga de GitHub Pages.</li>
-            <li>Compártela por WhatsApp, correo o código QR en tus flyers impresos.</li>
-            <li>Edita las listas de plazas directamente en GitHub cuando haya cambios.</li>
-            <li>Usa cada diapositiva como guía para explicar beneficios, zonas y características de las plazas.</li>
-          </ul>
-        </div>
-      </article>
-
-      <!-- Barra de progreso -->
-      <div class="progress-bar">
-        <div class="progress-inner" id="progressInner"></div>
+      <div class="buttons">
+        <button class="btn-secondary" type="button" id="btn-step1-skip">Omitir</button>
+        <button class="btn-primary" type="button" id="btn-step1-next">Siguiente ▸</button>
       </div>
+
+      <div class="error" id="error-step1"></div>
     </section>
 
-    <!-- Footer / Controles -->
-    <footer class="footer">
-      <div class="footer-left">
-        <span id="slideLabel">Diapositiva 1 de 6 · Portada</span>
+    <!-- PASO 2: Ingresos -->
+    <section class="step" data-step="2">
+      <div class="field-group">
+        <label for="ingreso-mensual-neto">
+          Ingreso mensual NETO
+        </label>
+        <input type="number" id="ingreso-mensual-neto" min="0" step="0.01" placeholder="Ej. 25000" />
+        <p class="hint">
+          Este es el sueldo que realmente recibes al mes, ya con todas las deducciones.
+        </p>
       </div>
-      <div class="controls">
-        <button class="btn" id="prevBtn">
-          ◀ <span>Anterior</span>
-        </button>
-        <button class="btn" id="nextBtn">
-          <span>Siguiente</span> ▶
-        </button>
+
+      <div class="field-group">
+        <label for="percepciones-anuales">
+          Percepciones anuales (opcional)
+        </label>
+        <input type="number" id="percepciones-anuales" min="0" step="0.01" placeholder="Ej. aguinaldo, bonos..." />
+        <p class="hint">
+          Suma aproximada de aguinaldo, bonos y otras prestaciones al año (si quieres considerarlas).
+        </p>
       </div>
-    </footer>
+
+      <div class="field-group">
+        <label for="ahorro-mensual">
+          Ahorro mensual planeado
+        </label>
+        <input type="number" id="ahorro-mensual" min="0" step="0.01" placeholder="Ej. 4000" />
+        <p class="hint">
+          Cantidad que te gustaría destinar cada mes a la estrategia HTRNL.
+        </p>
+      </div>
+
+      <div class="field-group">
+        <label for="plazo-anios">
+          Plazo en años
+        </label>
+        <input type="number" id="plazo-anios" min="1" max="50" placeholder="Ej. 20" />
+      </div>
+
+      <div class="buttons">
+        <button class="btn-secondary" type="button" id="btn-step2-prev">◂ Anterior</button>
+        <button class="btn-primary" type="button" id="btn-step2-next">Siguiente ▸</button>
+      </div>
+
+      <div class="error" id="error-step2"></div>
+    </section>
+
+    <!-- PASO 3: Resumen -->
+    <section class="step" data-step="3">
+      <h2 style="font-size:1.05rem; margin-top:0;">Resumen de tu información</h2>
+
+      <div class="resume-card" id="resume-card">
+        <!-- Se llena dinámicamente -->
+      </div>
+
+      <div class="result" id="resultado">
+        <!-- Se llena dinámicamente -->
+      </div>
+
+      <div class="buttons">
+        <button class="btn-secondary" type="button" id="btn-step3-prev">◂ Regresar</button>
+        <button class="btn-primary" type="button" id="btn-finalizar">Finalizar</button>
+      </div>
+    </section>
   </div>
 
   <script>
-    const slides = Array.from(document.querySelectorAll('.slide'));
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const progressInner = document.getElementById('progressInner');
-    const slideLabel = document.getElementById('slideLabel');
+    // ---------------------------
+    // Manejo de pasos
+    // ---------------------------
+    let currentStep = 1;
+    const totalSteps = 3;
 
-    let current = 0;
+    const steps = document.querySelectorAll(".step");
+    const dots = document.querySelectorAll(".step-dot");
 
-    const slideNames = [
-      'Portada',
-      'Beneficios',
-      'Zonas del estado',
-      'Plazas La Paz / Constitución',
-      'Plazas zona foránea',
-      'Cierre'
-    ];
+    function showStep(step) {
+      currentStep = step;
 
-    function updateSlide() {
-      slides.forEach((s, i) => s.classList.toggle('active', i === current));
-      const total = slides.length;
-      const percent = ((current + 1) / total) * 100;
-      progressInner.style.width = percent + '%';
+      steps.forEach((section) => {
+        const stepNum = Number(section.getAttribute("data-step"));
+        section.classList.toggle("active", stepNum === step);
+      });
 
-      slideLabel.textContent = \`Diapositiva \${current + 1} de \${total} · \${slideNames[current]}\`;
-
-      prevBtn.disabled = current === 0;
-      nextBtn.disabled = current === total - 1;
+      dots.forEach((dot) => {
+        const stepNum = Number(dot.getAttribute("data-step-dot"));
+        dot.classList.toggle("active", stepNum === step);
+      });
     }
 
-    prevBtn.addEventListener('click', () => {
-      if (current > 0) {
-        current--;
-        updateSlide();
+    // ---------------------------
+    // Funciones de validación
+    // ---------------------------
+    function validateStep1() {
+      const edad = Number(document.getElementById("edad").value);
+      const errorBox = document.getElementById("error-step1");
+      errorBox.textContent = "";
+
+      if (!edad || edad < 18 || edad > 90) {
+        errorBox.textContent = "Por favor, ingresa una edad válida (entre 18 y 90 años).";
+        return false;
+      }
+
+      return true;
+    }
+
+    function validateStep2() {
+      const ingresoMensualNeto = Number(
+        document.getElementById("ingreso-mensual-neto").value
+      );
+      const ahorroMensual = Number(
+        document.getElementById("ahorro-mensual").value
+      );
+      const plazoAnios = Number(
+        document.getElementById("plazo-anios").value
+      );
+
+      const errorBox = document.getElementById("error-step2");
+      errorBox.textContent = "";
+
+      if (!ingresoMensualNeto || ingresoMensualNeto <= 0) {
+        errorBox.textContent =
+          "Ingresa tu ingreso mensual NETO (mayor a 0).";
+        return false;
+      }
+
+      if (!ahorroMensual || ahorroMensual <= 0) {
+        errorBox.textContent =
+          "Ingresa el ahorro mensual que planeas destinar (mayor a 0).";
+        return false;
+      }
+
+      if (!plazoAnios || plazoAnios <= 0) {
+        errorBox.textContent =
+          "Ingresa el plazo, en años, durante el cual planeas ahorrar.";
+        return false;
+      }
+
+      if (ahorroMensual > ingresoMensualNeto) {
+        errorBox.textContent =
+          "Tu ahorro mensual no puede ser mayor que tu ingreso mensual neto.";
+        return false;
+      }
+
+      return true;
+    }
+
+    // ---------------------------
+    // Lógica de resumen y cálculo
+    // ---------------------------
+    function buildResumeAndResult() {
+      const nombre = document.getElementById("nombre").value.trim();
+      const edad = Number(document.getElementById("edad").value);
+
+      const ingresoMensualNeto = Number(
+        document.getElementById("ingreso-mensual-neto").value
+      );
+      const percepcionesAnuales = Number(
+        document.getElementById("percepciones-anuales").value || 0
+      );
+      const ahorroMensual = Number(
+        document.getElementById("ahorro-mensual").value
+      );
+      const plazoAnios = Number(
+        document.getElementById("plazo-anios").value
+      );
+
+      const resumeCard = document.getElementById("resume-card");
+      const resultado = document.getElementById("resultado");
+
+      // IMPORTANTE: ingresoMensualNeto se respeta tal cual
+      const ingresoAnualNeto = ingresoMensualNeto * 12;
+      const totalAportado = ahorroMensual * 12 * plazoAnios;
+
+      // Simulación simple: interes compuesto aproximado (5% anual)
+      const tasaAnual = 0.05;
+      const meses = plazoAnios * 12;
+      const tasaMensual = Math.pow(1 + tasaAnual, 1 / 12) - 1;
+
+      let saldo = 0;
+      for (let i = 0; i < meses; i++) {
+        saldo = saldo * (1 + tasaMensual) + ahorroMensual;
+      }
+
+      const nombreMostrar = nombre || "Usuario HTRNL";
+
+      resumeCard.innerHTML = `
+        <div class="resume-row">
+          <span class="resume-label">Nombre:</span>
+          <span class="resume-value">${nombreMostrar}</span>
+        </div>
+        <div class="resume-row">
+          <span class="resume-label">Edad:</span>
+          <span class="resume-value">${edad} años</span>
+        </div>
+        <div class="resume-row">
+          <span class="resume-label">Ingreso mensual NETO:</span>
+          <span class="resume-value">$${ingresoMensualNeto.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+        </div>
+        <div class="resume-row">
+          <span class="resume-label">Ingreso anual NETO:</span>
+          <span class="resume-value">$${ingresoAnualNeto.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+        </div>
+        <div class="resume-row">
+          <span class="resume-label">Percepciones anuales:</span>
+          <span class="resume-value">$${percepcionesAnuales.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+        </div>
+        <div class="resume-row">
+          <span class="resume-label">Ahorro mensual:</span>
+          <span class="resume-value">$${ahorroMensual.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+        </div>
+        <div class="resume-row">
+          <span class="resume-label">Plazo:</span>
+          <span class="resume-value">${plazoAnios} años</span>
+        </div>
+      `;
+
+      resultado.innerHTML = `
+        <strong>Resumen HTRNL</strong><br />
+        Si ahorras <strong>$${ahorroMensual.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong> al mes durante 
+        <strong>${plazoAnios} años</strong>, habrás aportado en total aproximadamente 
+        <strong>$${totalAportado.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong>.<br><br>
+        Con una tasa hipotética del <strong>5% anual</strong> (solo como ejemplo), al final del plazo podrías tener alrededor de:
+        <br><br>
+        <strong style="font-size:1.05rem;">
+          $${saldo.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+        </strong>
+      `;
+    }
+
+    // ---------------------------
+    // Listeners de botones
+    // ---------------------------
+    document.getElementById("btn-step1-next").addEventListener("click", () => {
+      if (validateStep1()) {
+        showStep(2);
       }
     });
 
-    nextBtn.addEventListener('click', () => {
-      if (current < slides.length - 1) {
-        current++;
-        updateSlide();
+    document.getElementById("btn-step1-skip").addEventListener("click", () => {
+      // Permite avanzar ignorando nombre, pero valida edad mínima
+      if (validateStep1()) {
+        showStep(2);
       }
     });
 
-    // Avance automático cada 12 segundos (puedes desactivarlo si no lo quieres)
-    setInterval(() => {
-      if (current < slides.length - 1) {
-        current++;
-      } else {
-        current = 0;
+    document.getElementById("btn-step2-prev").addEventListener("click", () => {
+      showStep(1);
+    });
+
+    document.getElementById("btn-step2-next").addEventListener("click", () => {
+      if (validateStep2()) {
+        buildResumeAndResult();
+        showStep(3);
       }
-      updateSlide();
-    }, 12000);
+    });
+
+    document.getElementById("btn-step3-prev").addEventListener("click", () => {
+      showStep(2);
+    });
+
+    document.getElementById("btn-finalizar").addEventListener("click", () => {
+      alert("Tu simulación HTRNL está lista. Puedes ajustar los datos y volver a calcular cuando quieras.");
+    });
   </script>
 </body>
 </html>
+
