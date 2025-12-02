@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Simulador HTRNL</title>
+  <title>HTRNL - Simulador simple</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * {
@@ -14,10 +14,10 @@
       margin: 0;
       padding: 0;
       background: #f3f4f6;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
     }
 
     .app {
@@ -26,12 +26,11 @@
       width: 100%;
       border-radius: 16px;
       padding: 24px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
     }
 
     h1 {
-      margin-top: 0;
-      margin-bottom: 4px;
+      margin: 0 0 4px;
       font-size: 1.4rem;
       text-align: center;
       color: #111827;
@@ -47,8 +46,8 @@
     .steps-indicator {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 6px;
+      margin-bottom: 18px;
     }
 
     .step-dot {
@@ -56,7 +55,7 @@
       height: 10px;
       border-radius: 999px;
       background: #e5e7eb;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
     }
 
     .step-dot.active {
@@ -95,12 +94,6 @@
       color: #374151;
     }
 
-    .hint {
-      font-size: 0.75rem;
-      color: #9ca3af;
-      margin-top: 2px;
-    }
-
     input[type="number"],
     input[type="text"] {
       width: 100%;
@@ -109,8 +102,8 @@
       border: 1px solid #d1d5db;
       font-size: 0.95rem;
       outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
       background: #f9fafb;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
 
     input[type="number"]:focus,
@@ -118,6 +111,12 @@
       border-color: #2563eb;
       box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
       background: #ffffff;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 2px;
     }
 
     .buttons {
@@ -165,6 +164,12 @@
       box-shadow: none;
     }
 
+    .error {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #b91c1c;
+    }
+
     .resume-card {
       background: #f9fafb;
       border-radius: 12px;
@@ -189,27 +194,23 @@
       color: #111827;
     }
 
-    .result {
+    .ai-placeholder {
       margin-top: 14px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       background: #eff6ff;
       border-radius: 10px;
       padding: 10px 12px;
       border: 1px solid #bfdbfe;
       color: #1d4ed8;
     }
-
-    .error {
-      margin-top: 8px;
-      font-size: 0.8rem;
-      color: #b91c1c;
-    }
   </style>
 </head>
 <body>
   <div class="app">
-    <h1>Simulador HTRNL</h1>
-    <p class="subtitle">Captura tu información y revisa tu resumen. El ingreso mensual se usa tal cual lo ingresas (neto).</p>
+    <h1>HTRNL</h1>
+    <p class="subtitle">
+      Captura tu información. Aquí <strong>no se hacen cálculos raros</strong>, solo se muestra exactamente lo que ingresas.
+    </p>
 
     <div class="steps-indicator">
       <div class="step-dot active" data-step-dot="1"></div>
@@ -217,22 +218,23 @@
       <div class="step-dot" data-step-dot="3"></div>
     </div>
 
-    <!-- PASO 1: Datos básicos -->
+    <!-- PASO 1: Datos personales -->
     <section class="step active" data-step="1">
       <div class="field-group">
-        <label for="nombre">Nombre completo</label>
+        <label for="nombre">Nombre (opcional)</label>
         <input type="text" id="nombre" placeholder="Ej. Moisés Beltrán" />
-        <p class="hint">Opcional, solo para personalizar tu reporte.</p>
       </div>
-
       <div class="field-group">
-        <label for="edad">Edad actual</label>
+        <label for="edad">Edad</label>
         <input type="number" id="edad" min="18" max="90" placeholder="Ej. 40" />
+        <p class="hint">Solo se usa para el resumen. No se calcula nada con la edad.</p>
       </div>
 
       <div class="buttons">
-        <button class="btn-secondary" type="button" id="btn-step1-skip">Omitir</button>
-        <button class="btn-primary" type="button" id="btn-step1-next">Siguiente ▸</button>
+        <span style="flex:1"></span>
+        <button class="btn-primary" type="button" id="btn-step1-next">
+          Siguiente ▸
+        </button>
       </div>
 
       <div class="error" id="error-step1"></div>
@@ -241,72 +243,75 @@
     <!-- PASO 2: Ingresos -->
     <section class="step" data-step="2">
       <div class="field-group">
-        <label for="ingreso-mensual-neto">
-          Ingreso mensual NETO
-        </label>
+        <label for="ingreso-mensual-neto">Ingreso mensual NETO</label>
         <input type="number" id="ingreso-mensual-neto" min="0" step="0.01" placeholder="Ej. 25000" />
         <p class="hint">
-          Este es el sueldo que realmente recibes al mes, ya con todas las deducciones.
+          Este es el sueldo que realmente recibes al mes, <strong>después</strong> de impuestos y deducciones.
         </p>
       </div>
 
       <div class="field-group">
-        <label for="percepciones-anuales">
-          Percepciones anuales (opcional)
-        </label>
-        <input type="number" id="percepciones-anuales" min="0" step="0.01" placeholder="Ej. aguinaldo, bonos..." />
+        <label for="ingreso-mensual-bruto">Ingreso mensual BRUTO (opcional)</label>
+        <input type="number" id="ingreso-mensual-bruto" min="0" step="0.01" placeholder="Ej. 32000" />
         <p class="hint">
-          Suma aproximada de aguinaldo, bonos y otras prestaciones al año (si quieres considerarlas).
+          Si lo capturas, solo se mostrará en el resumen. No se usa para cálculos automáticos.
         </p>
       </div>
 
       <div class="field-group">
-        <label for="ahorro-mensual">
-          Ahorro mensual planeado
-        </label>
+        <label for="percepciones-anuales">Percepciones anuales (opcional)</label>
+        <input type="number" id="percepciones-anuales" min="0" step="0.01" placeholder="Aguinaldo, bonos, etc." />
+      </div>
+
+      <div class="field-group">
+        <label for="ahorro-mensual">Ahorro mensual destinado a HTRNL</label>
         <input type="number" id="ahorro-mensual" min="0" step="0.01" placeholder="Ej. 4000" />
         <p class="hint">
-          Cantidad que te gustaría destinar cada mes a la estrategia HTRNL.
+          Solo se va a mostrar tal cual en el resumen. Tú defines cuánto quieres ahorrar.
         </p>
-      </div>
-
-      <div class="field-group">
-        <label for="plazo-anios">
-          Plazo en años
-        </label>
-        <input type="number" id="plazo-anios" min="1" max="50" placeholder="Ej. 20" />
       </div>
 
       <div class="buttons">
-        <button class="btn-secondary" type="button" id="btn-step2-prev">◂ Anterior</button>
-        <button class="btn-primary" type="button" id="btn-step2-next">Siguiente ▸</button>
+        <button class="btn-secondary" type="button" id="btn-step2-prev">
+          ◂ Anterior
+        </button>
+        <button class="btn-primary" type="button" id="btn-step2-next">
+          Siguiente ▸
+        </button>
       </div>
 
       <div class="error" id="error-step2"></div>
     </section>
 
-    <!-- PASO 3: Resumen -->
+    <!-- PASO 3: Resumen (sin cálculos raros) -->
     <section class="step" data-step="3">
-      <h2 style="font-size:1.05rem; margin-top:0;">Resumen de tu información</h2>
+      <h2 style="font-size:1.05rem; margin-top:0;">Resumen de tus datos</h2>
 
       <div class="resume-card" id="resume-card">
-        <!-- Se llena dinámicamente -->
+        <!-- Se llena por JS -->
       </div>
 
-      <div class="result" id="resultado">
-        <!-- Se llena dinámicamente -->
+      <div class="ai-placeholder">
+        Aquí puedes conectar tu app de Google AI Studio (HTRNL) para que,
+        con estos datos, genere el análisis o la explicación que tú definiste.
+        <br /><br />
+        Por ahora, <strong>solo mostramos lo que capturaste</strong>, sin modificarlo.
       </div>
 
       <div class="buttons">
-        <button class="btn-secondary" type="button" id="btn-step3-prev">◂ Regresar</button>
-        <button class="btn-primary" type="button" id="btn-finalizar">Finalizar</button>
+        <button class="btn-secondary" type="button" id="btn-step3-prev">
+          ◂ Regresar
+        </button>
+        <button class="btn-primary" type="button" id="btn-finalizar">
+          Listo
+        </button>
       </div>
     </section>
   </div>
 
   <script>
     // ---------------------------
-    // Manejo de pasos
+    // Control de pasos
     // ---------------------------
     let currentStep = 1;
     const totalSteps = 3;
@@ -316,20 +321,19 @@
 
     function showStep(step) {
       currentStep = step;
-
-      steps.forEach((section) => {
+      steps.forEach(section => {
         const stepNum = Number(section.getAttribute("data-step"));
         section.classList.toggle("active", stepNum === step);
       });
 
-      dots.forEach((dot) => {
+      dots.forEach(dot => {
         const stepNum = Number(dot.getAttribute("data-step-dot"));
         dot.classList.toggle("active", stepNum === step);
       });
     }
 
     // ---------------------------
-    // Funciones de validación
+    // Validaciones básicas
     // ---------------------------
     function validateStep1() {
       const edad = Number(document.getElementById("edad").value);
@@ -337,10 +341,9 @@
       errorBox.textContent = "";
 
       if (!edad || edad < 18 || edad > 90) {
-        errorBox.textContent = "Por favor, ingresa una edad válida (entre 18 y 90 años).";
+        errorBox.textContent = "Ingresa una edad válida (entre 18 y 90 años).";
         return false;
       }
-
       return true;
     }
 
@@ -351,10 +354,6 @@
       const ahorroMensual = Number(
         document.getElementById("ahorro-mensual").value
       );
-      const plazoAnios = Number(
-        document.getElementById("plazo-anios").value
-      );
-
       const errorBox = document.getElementById("error-step2");
       errorBox.textContent = "";
 
@@ -363,108 +362,71 @@
           "Ingresa tu ingreso mensual NETO (mayor a 0).";
         return false;
       }
-
       if (!ahorroMensual || ahorroMensual <= 0) {
         errorBox.textContent =
-          "Ingresa el ahorro mensual que planeas destinar (mayor a 0).";
+          "Ingresa el ahorro mensual destinado a HTRNL (mayor a 0).";
         return false;
       }
-
-      if (!plazoAnios || plazoAnios <= 0) {
-        errorBox.textContent =
-          "Ingresa el plazo, en años, durante el cual planeas ahorrar.";
-        return false;
-      }
-
       if (ahorroMensual > ingresoMensualNeto) {
         errorBox.textContent =
-          "Tu ahorro mensual no puede ser mayor que tu ingreso mensual neto.";
+          "El ahorro mensual no puede ser mayor que tu ingreso mensual neto.";
         return false;
       }
-
       return true;
     }
 
     // ---------------------------
-    // Lógica de resumen y cálculo
+    // Formateo de moneda
     // ---------------------------
-    function buildResumeAndResult() {
-      const nombre = document.getElementById("nombre").value.trim();
-      const edad = Number(document.getElementById("edad").value);
+    function formatMoney(value) {
+      if (!value && value !== 0) return "-";
+      const num = Number(value);
+      if (Number.isNaN(num)) return "-";
+      return "$" + num.toLocaleString("es-MX", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
 
-      const ingresoMensualNeto = Number(
-        document.getElementById("ingreso-mensual-neto").value
-      );
-      const percepcionesAnuales = Number(
-        document.getElementById("percepciones-anuales").value || 0
-      );
-      const ahorroMensual = Number(
-        document.getElementById("ahorro-mensual").value
-      );
-      const plazoAnios = Number(
-        document.getElementById("plazo-anios").value
-      );
+    // ---------------------------
+    // Construir el resumen
+    // ---------------------------
+    function buildResume() {
+      const nombre = document.getElementById("nombre").value.trim() || "Sin nombre";
+      const edad = document.getElementById("edad").value;
 
+      const ingresoMensualNeto = document.getElementById("ingreso-mensual-neto").value;
+      const ingresoMensualBruto = document.getElementById("ingreso-mensual-bruto").value;
+      const percepcionesAnuales = document.getElementById("percepciones-anuales").value;
+      const ahorroMensual = document.getElementById("ahorro-mensual").value;
+
+      // IMPORTANTE: aquí solo mostramos, NO calculamos nada extra
       const resumeCard = document.getElementById("resume-card");
-      const resultado = document.getElementById("resultado");
-
-      // IMPORTANTE: ingresoMensualNeto se respeta tal cual
-      const ingresoAnualNeto = ingresoMensualNeto * 12;
-      const totalAportado = ahorroMensual * 12 * plazoAnios;
-
-      // Simulación simple: interes compuesto aproximado (5% anual)
-      const tasaAnual = 0.05;
-      const meses = plazoAnios * 12;
-      const tasaMensual = Math.pow(1 + tasaAnual, 1 / 12) - 1;
-
-      let saldo = 0;
-      for (let i = 0; i < meses; i++) {
-        saldo = saldo * (1 + tasaMensual) + ahorroMensual;
-      }
-
-      const nombreMostrar = nombre || "Usuario HTRNL";
-
       resumeCard.innerHTML = `
         <div class="resume-row">
           <span class="resume-label">Nombre:</span>
-          <span class="resume-value">${nombreMostrar}</span>
+          <span class="resume-value">${nombre}</span>
         </div>
         <div class="resume-row">
           <span class="resume-label">Edad:</span>
-          <span class="resume-value">${edad} años</span>
+          <span class="resume-value">${edad || "-"} años</span>
         </div>
         <div class="resume-row">
           <span class="resume-label">Ingreso mensual NETO:</span>
-          <span class="resume-value">$${ingresoMensualNeto.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+          <span class="resume-value">${formatMoney(ingresoMensualNeto)}</span>
         </div>
         <div class="resume-row">
-          <span class="resume-label">Ingreso anual NETO:</span>
-          <span class="resume-value">$${ingresoAnualNeto.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+          <span class="resume-label">Ingreso mensual BRUTO:</span>
+          <span class="resume-value">${ingresoMensualBruto ? formatMoney(ingresoMensualBruto) : "-"}</span>
         </div>
         <div class="resume-row">
           <span class="resume-label">Percepciones anuales:</span>
-          <span class="resume-value">$${percepcionesAnuales.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+          <span class="resume-value">${percepcionesAnuales ? formatMoney(percepcionesAnuales) : "-"}</span>
         </div>
         <div class="resume-row">
-          <span class="resume-label">Ahorro mensual:</span>
-          <span class="resume-value">$${ahorroMensual.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+          <span class="resume-label">Ahorro mensual HTRNL:</span>
+          <span class="resume-value">${formatMoney(ahorroMensual)}</span>
         </div>
-        <div class="resume-row">
-          <span class="resume-label">Plazo:</span>
-          <span class="resume-value">${plazoAnios} años</span>
-        </div>
-      `;
-
-      resultado.innerHTML = `
-        <strong>Resumen HTRNL</strong><br />
-        Si ahorras <strong>$${ahorroMensual.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong> al mes durante 
-        <strong>${plazoAnios} años</strong>, habrás aportado en total aproximadamente 
-        <strong>$${totalAportado.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong>.<br><br>
-        Con una tasa hipotética del <strong>5% anual</strong> (solo como ejemplo), al final del plazo podrías tener alrededor de:
-        <br><br>
-        <strong style="font-size:1.05rem;">
-          $${saldo.toLocaleString("es-MX", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
-        </strong>
       `;
     }
 
@@ -477,20 +439,13 @@
       }
     });
 
-    document.getElementById("btn-step1-skip").addEventListener("click", () => {
-      // Permite avanzar ignorando nombre, pero valida edad mínima
-      if (validateStep1()) {
-        showStep(2);
-      }
-    });
-
     document.getElementById("btn-step2-prev").addEventListener("click", () => {
       showStep(1);
     });
 
     document.getElementById("btn-step2-next").addEventListener("click", () => {
       if (validateStep2()) {
-        buildResumeAndResult();
+        buildResume();
         showStep(3);
       }
     });
@@ -500,9 +455,8 @@
     });
 
     document.getElementById("btn-finalizar").addEventListener("click", () => {
-      alert("Tu simulación HTRNL está lista. Puedes ajustar los datos y volver a calcular cuando quieras.");
+      alert("Datos registrados. Esta versión solo muestra tu información, sin cálculos adicionales.");
     });
   </script>
 </body>
 </html>
-
