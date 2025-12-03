@@ -2,460 +2,1508 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>HTRNL - Simulador simple</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baja California Sur te llama: Plazas para Médicos Especialistas IMSS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Bootstrap (vía CDN, opcional) -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous"
+  />
   <style>
+    :root {
+      --imss-green-dark: #0b3b30;
+      --imss-green: #137a5b;
+      --imss-green-light: #1e9c73;
+      --imss-gray-bg: #f3f4f6;
+      --imss-gray-border: #e1e4ea;
+      --imss-text-main: #1f2933;
+      --imss-text-muted: #6b7280;
+      --badge-green-bg: #e6f9f1;
+      --badge-green-text: #147d4b;
+      --badge-orange-bg: #fff3e6;
+      --badge-orange-text: #b96a1b;
+    }
+
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f3f4f6;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background-color: #ffffff;
+      color: var(--imss-text-main);
     }
 
-    .app {
-      background: #ffffff;
-      max-width: 480px;
-      width: 100%;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
-    h1 {
-      margin: 0 0 4px;
-      font-size: 1.4rem;
-      text-align: center;
-      color: #111827;
+    /* NAVBAR */
+
+    .navbar-custom {
+      background-color: var(--imss-green-dark);
     }
 
-    .subtitle {
-      margin: 0 0 16px;
-      font-size: 0.9rem;
-      text-align: center;
-      color: #6b7280;
+    .navbar-custom .navbar-brand {
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 0.03em;
     }
 
-    .steps-indicator {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 18px;
-    }
-
-    .step-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      transition: all 0.15s ease;
-    }
-
-    .step-dot.active {
-      width: 24px;
-      background: #2563eb;
-    }
-
-    .step {
-      display: none;
-      animation: fadeIn 0.25s ease-out;
-    }
-
-    .step.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(4px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .field-group {
-      margin-bottom: 14px;
-    }
-
-    label {
-      display: block;
-      font-size: 0.9rem;
-      margin-bottom: 4px;
-      color: #374151;
-    }
-
-    input[type="number"],
-    input[type="text"] {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
+    .navbar-custom .nav-link {
+      color: #d1d5db;
+      font-weight: 400;
       font-size: 0.95rem;
-      outline: none;
-      background: #f9fafb;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
 
-    input[type="number"]:focus,
-    input[type="text"]:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
-      background: #ffffff;
+    .navbar-custom .nav-link:hover,
+    .navbar-custom .nav-link.active {
+      color: #ffffff;
     }
 
-    .hint {
-      font-size: 0.75rem;
-      color: #9ca3af;
-      margin-top: 2px;
+    .navbar-shadow {
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
     }
 
-    .buttons {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 18px;
+    /* HERO */
+
+    #inicio {
+      background: linear-gradient(135deg, var(--imss-green-dark), var(--imss-green));
+      color: #ffffff;
+      padding: 6rem 1.5rem 4rem;
     }
 
-    button {
-      border-radius: 999px;
+    @media (min-width: 768px) {
+      #inicio {
+        padding: 7rem 0 5rem;
+      }
+    }
+
+    .hero-title {
+      font-size: 2.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 992px) {
+      .hero-title {
+        font-size: 2.6rem;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      max-width: 32rem;
+      color: #e5e7eb;
+    }
+
+    .hero-cta {
+      margin-top: 2rem;
+    }
+
+    .btn-cta {
+      background-color: var(--imss-green-light);
       border: none;
-      padding: 10px 16px;
-      font-size: 0.9rem;
-      cursor: pointer;
+      padding: 0.8rem 1.8rem;
+      border-radius: 999px;
+      font-weight: 600;
+      color: #ffffff;
+      font-size: 0.98rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+    }
+
+    .btn-cta:hover {
+      background-color: #18b37d;
+    }
+
+    .hero-pill {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
-    }
-
-    button:active {
-      transform: translateY(1px);
-      box-shadow: none;
-    }
-
-    .btn-secondary {
-      background: #e5e7eb;
-      color: #374151;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
-      flex: 1;
-    }
-
-    .btn-primary {
-      background: #2563eb;
-      color: white;
-      box-shadow: 0 1px 5px rgba(37, 99, 235, 0.4);
-      flex: 1.2;
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    .error {
-      margin-top: 8px;
+      gap: 0.4rem;
+      background: rgba(15, 118, 110, 0.18);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
       font-size: 0.8rem;
-      color: #b91c1c;
+      color: #bfdbfe;
+      margin-bottom: 0.7rem;
     }
 
-    .resume-card {
-      background: #f9fafb;
-      border-radius: 12px;
-      padding: 12px 14px;
-      border: 1px solid #e5e7eb;
-      font-size: 0.9rem;
-      color: #374151;
-    }
-
-    .resume-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
-
-    .resume-label {
-      color: #6b7280;
-    }
-
-    .resume-value {
+    .hero-highlight {
+      color: #bbf7d0;
       font-weight: 600;
-      color: #111827;
     }
 
-    .ai-placeholder {
-      margin-top: 14px;
-      font-size: 0.85rem;
-      background: #eff6ff;
-      border-radius: 10px;
-      padding: 10px 12px;
-      border: 1px solid #bfdbfe;
-      color: #1d4ed8;
+    /* GENERIC SECTIONS */
+
+    section {
+      padding: 4rem 0;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.98rem;
+      color: var(--imss-text-muted);
+      max-width: 36rem;
+    }
+
+    /* INTRO SECTION */
+
+    #intro {
+      background-color: #ffffff;
+    }
+
+    /* BENEFITS ECONOMICOS */
+
+    #beneficios {
+      background-color: var(--imss-gray-bg);
+    }
+
+    .benefit-card {
+      background-color: #ffffff;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      border: 1px solid var(--imss-gray-border);
+      height: 100%;
+    }
+
+    .benefit-card h4 {
+      font-size: 1.05rem;
+      margin-bottom: 0.9rem;
+      font-weight: 600;
+    }
+
+    .mini-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--imss-text-muted);
+      font-weight: 500;
+    }
+
+    .amount-main {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--imss-green-dark);
+    }
+
+    .benefit-table {
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    .benefit-table th,
+    .benefit-table td {
+      padding: 0.25rem 0;
+    }
+
+    .benefit-table th {
+      font-weight: 500;
+      color: var(--imss-text-muted);
+    }
+
+    .benefit-table td:last-child {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .benefit-note {
+      font-size: 0.9rem;
+      color: var(--imss-text-muted);
+      margin-top: 1rem;
+    }
+
+    /* CALIDAD DE VIDA */
+
+    .life-card {
+      background-color: #ffffff;
+      border-radius: 0.9rem;
+      padding: 1.4rem;
+      border: 1px solid var(--imss-gray-border);
+      height: 100%;
+    }
+
+    .life-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background-color: var(--imss-green-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 1.1rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .life-card h4 {
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+
+    .life-card p {
+      font-size: 0.9rem;
+      color: var(--imss-text-muted);
+    }
+
+    /* GALERIA LOCALIDADES */
+
+    #localidades {
+      background-color: #ffffff;
+    }
+
+    .locality-card {
+      border-radius: 1rem;
+      border: 1px solid var(--imss-gray-border);
+      overflow: hidden;
+      background-color: #ffffff;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .locality-image {
+      height: 160px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .locality-body {
+      padding: 1rem 1.1rem 1.2rem;
+    }
+
+    .locality-name {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .locality-tag {
+      display: inline-flex;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background-color: var(--imss-gray-bg);
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      margin-bottom: 0.4rem;
+      color: var(--imss-text-muted);
+    }
+
+    .locality-body p {
+      font-size: 0.9rem;
+      color: var(--imss-text-muted);
+      margin: 0;
+    }
+
+    /* PLAZAS VACANTES */
+
+    #plazas {
+      background-color: var(--imss-gray-bg);
+    }
+
+    .location-header {
+      background-color: var(--imss-green-dark);
+      color: #ffffff;
+      border-radius: 0.9rem 0.9rem 0 0;
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .location-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .location-meta {
+      text-align: right;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .location-meta span {
+      display: block;
+    }
+
+    .location-meta .vacancies-count {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .location-meta .status {
+      color: #fecaca;
+      font-weight: 500;
+    }
+
+    .location-wrapper {
+      border-radius: 0.9rem;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      background-color: #ffffff;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .unit-card {
+      padding: 1.2rem 1.4rem 0.4rem;
+    }
+
+    .unit-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .unit-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background-color: var(--imss-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 1rem;
+    }
+
+    .unit-name {
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+
+    .unit-sub {
+      font-size: 0.78rem;
+      color: var(--imss-text-muted);
+    }
+
+    .vacancies-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .vacancies-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-bottom: 1rem;
+    }
+
+    .vacancies-table thead {
+      background-color: #f9fafb;
+    }
+
+    .vacancies-table th,
+    .vacancies-table td {
+      padding: 0.55rem 0.4rem;
+      border-bottom: 1px solid var(--imss-gray-border);
+      white-space: nowrap;
+    }
+
+    .vacancies-table th {
+      font-weight: 600;
+      color: var(--imss-text-muted);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .vacancies-table td:first-child {
+      color: var(--imss-text-muted);
+      font-weight: 500;
+    }
+
+    .vacancies-table td.specialty {
+      font-weight: 600;
+      color: var(--imss-green-dark);
+    }
+
+    .badge-contract {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 0.18rem 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .badge-def {
+      background-color: var(--badge-green-bg);
+      color: var(--badge-green-text);
+    }
+
+    .badge-nodef {
+      background-color: var(--badge-orange-bg);
+      color: var(--badge-orange-text);
+    }
+
+    .badge-subtext {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--imss-text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* CONTACTO / CTA FINAL */
+
+    #contacto {
+      background-color: #ffffff;
+    }
+
+    .cta-box {
+      border-radius: 1rem;
+      padding: 2rem 1.5rem;
+      background: radial-gradient(circle at top left, #d1fae5, #ffffff);
+      border: 1px solid #bbf7d0;
+    }
+
+    .cta-box h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.7rem;
+    }
+
+    .cta-box p {
+      font-size: 0.95rem;
+      color: var(--imss-text-muted);
+    }
+
+    .cta-mail {
+      font-weight: 600;
+      color: var(--imss-green);
+    }
+
+    footer {
+      background-color: var(--imss-green-dark);
+      color: #9ca3af;
+      font-size: 0.8rem;
+      padding: 0.9rem 0;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <h1>HTRNL</h1>
-    <p class="subtitle">
-      Captura tu información. Aquí <strong>no se hacen cálculos raros</strong>, solo se muestra exactamente lo que ingresas.
-    </p>
-
-    <div class="steps-indicator">
-      <div class="step-dot active" data-step-dot="1"></div>
-      <div class="step-dot" data-step-dot="2"></div>
-      <div class="step-dot" data-step-dot="3"></div>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-custom navbar-shadow fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#inicio">
+        IMSS Baja California Sur
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav gap-lg-2">
+          <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#beneficios">Beneficios económicos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#vida">Calidad de vida</a></li>
+          <li class="nav-item"><a class="nav-link" href="#localidades">Localidades</a></li>
+          <li class="nav-item"><a class="nav-link" href="#plazas">Plazas vacantes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <!-- PASO 1: Datos personales -->
-    <section class="step active" data-step="1">
-      <div class="field-group">
-        <label for="nombre">Nombre (opcional)</label>
-        <input type="text" id="nombre" placeholder="Ej. Moisés Beltrán" />
+  <!-- HERO -->
+  <section id="inicio">
+    <div class="container">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-7">
+          <div class="hero-pill">
+            🩺 Convocatoria para Médicos Especialistas · IMSS BCS
+          </div>
+          <h1 class="hero-title">
+            Baja California Sur te llama: Plazas para Médicos Especialistas IMSS
+          </h1>
+          <p class="hero-subtitle">
+            Construye tu vida profesional y personal en uno de los estados con mejor calidad de vida de México:
+            estabilidad laboral, seguridad, mar, naturaleza y un paquete económico altamente competitivo.
+          </p>
+          <div class="hero-cta">
+            <a href="#contacto" class="btn btn-cta">
+              Quiero más información
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="rounded-4 bg-white bg-opacity-10 border border-white border-opacity-25 p-4">
+            <p class="mb-1 hero-highlight">¿Qué te ofrece BCS como especialista?</p>
+            <ul class="mb-0" style="font-size:0.9rem; color:#e5e7eb;">
+              <li>Uno de los pocos estados con sobresueldo del 50% por Zona Aislada.</li>
+              <li>Calidad de vida excepcional para ti y tu familia.</li>
+              <li>Oportunidades reales de desarrollo profesional y personal.</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="field-group">
-        <label for="edad">Edad</label>
-        <input type="number" id="edad" min="18" max="90" placeholder="Ej. 40" />
-        <p class="hint">Solo se usa para el resumen. No se calcula nada con la edad.</p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section id="intro">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-9">
+          <h2 class="section-title">¿Por qué ejercer tu especialidad en Baja California Sur?</h2>
+          <p class="section-subtitle">
+            Baja California Sur se ha consolidado como un destino donde la práctica médica y la vida personal encuentran equilibrio.
+            Las unidades médicas del IMSS en el estado buscan Médicos Especialistas que deseen un desarrollo profesional sólido,
+            ingresos competitivos y un entorno social tranquilo, en contacto permanente con el mar y la naturaleza.
+          </p>
+          <p style="font-size:0.95rem; margin-top:1rem;">
+            Aquí encontrarás:
+            <strong>estabilidad laboral</strong>, un entorno seguro para ti y tu familia, oportunidades de
+            <strong>crecimiento profesional</strong> y un balance real entre la vida dentro y fuera del hospital.
+            Ejercer en Baja California Sur no solo significa ocupar una plaza disponible: significa construir un
+            proyecto de vida con propósito, tranquilidad y proyección a futuro.
+          </p>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <div class="buttons">
-        <span style="flex:1"></span>
-        <button class="btn-primary" type="button" id="btn-step1-next">
-          Siguiente ▸
-        </button>
-      </div>
-
-      <div class="error" id="error-step1"></div>
-    </section>
-
-    <!-- PASO 2: Ingresos -->
-    <section class="step" data-step="2">
-      <div class="field-group">
-        <label for="ingreso-mensual-neto">Ingreso mensual NETO</label>
-        <input type="number" id="ingreso-mensual-neto" min="0" step="0.01" placeholder="Ej. 25000" />
-        <p class="hint">
-          Este es el sueldo que realmente recibes al mes, <strong>después</strong> de impuestos y deducciones.
-        </p>
-      </div>
-
-      <div class="field-group">
-        <label for="ingreso-mensual-bruto">Ingreso mensual BRUTO (opcional)</label>
-        <input type="number" id="ingreso-mensual-bruto" min="0" step="0.01" placeholder="Ej. 32000" />
-        <p class="hint">
-          Si lo capturas, solo se mostrará en el resumen. No se usa para cálculos automáticos.
-        </p>
-      </div>
-
-      <div class="field-group">
-        <label for="percepciones-anuales">Percepciones anuales (opcional)</label>
-        <input type="number" id="percepciones-anuales" min="0" step="0.01" placeholder="Aguinaldo, bonos, etc." />
-      </div>
-
-      <div class="field-group">
-        <label for="ahorro-mensual">Ahorro mensual destinado a HTRNL</label>
-        <input type="number" id="ahorro-mensual" min="0" step="0.01" placeholder="Ej. 4000" />
-        <p class="hint">
-          Solo se va a mostrar tal cual en el resumen. Tú defines cuánto quieres ahorrar.
-        </p>
-      </div>
-
-      <div class="buttons">
-        <button class="btn-secondary" type="button" id="btn-step2-prev">
-          ◂ Anterior
-        </button>
-        <button class="btn-primary" type="button" id="btn-step2-next">
-          Siguiente ▸
-        </button>
-      </div>
-
-      <div class="error" id="error-step2"></div>
-    </section>
-
-    <!-- PASO 3: Resumen (sin cálculos raros) -->
-    <section class="step" data-step="3">
-      <h2 style="font-size:1.05rem; margin-top:0;">Resumen de tus datos</h2>
-
-      <div class="resume-card" id="resume-card">
-        <!-- Se llena por JS -->
-      </div>
-
-      <div class="ai-placeholder">
-        Aquí puedes conectar tu app de Google AI Studio (HTRNL) para que,
-        con estos datos, genere el análisis o la explicación que tú definiste.
-        <br /><br />
-        Por ahora, <strong>solo mostramos lo que capturaste</strong>, sin modificarlo.
+  <!-- BENEFICIOS ECONÓMICOS -->
+  <section id="beneficios">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-lg-8">
+          <h2 class="section-title">Beneficios económicos para Médicos Especialistas</h2>
+          <p class="section-subtitle">
+            A continuación se presenta un ejemplo real del paquete económico mensual y anual de un Médico Especialista
+            que labora en Baja California Sur, considerando percepciones, estímulos y deducciones.
+          </p>
+        </div>
       </div>
 
-      <div class="buttons">
-        <button class="btn-secondary" type="button" id="btn-step3-prev">
-          ◂ Regresar
-        </button>
-        <button class="btn-primary" type="button" id="btn-finalizar">
-          Listo
-        </button>
-      </div>
-    </section>
-  </div>
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="benefit-card">
+            <h4>Percepciones mensuales netas</h4>
+            <p class="mini-label mb-1">Ingreso neto estimado</p>
+            <p class="amount-main">$47,407.38 MXN</p>
+            <table class="benefit-table mt-2">
+              <tbody>
+                <tr><th>Sueldos y compensaciones</th><td></td></tr>
+                <tr><td>Sueldo Tabular</td><td>$12,844.20</td></tr>
+                <tr><td>Cláusula 63 Bis Ayuda de Renta (B)</td><td>$10,551.52</td></tr>
+                <tr><td>Concepto 15</td><td>$11,697.86</td></tr>
+                <tr><td>Sobresueldo (Cláusula 86)</td><td>$4,679.14</td></tr>
+                <tr><td>Cláusula 63 Bis Ayuda de Renta (A)</td><td>$500.00</td></tr>
+                <tr><th class="pt-2">Estímulos y apoyos</th><td></td></tr>
+                <tr><td>Estímulo de Asistencia</td><td>$8,726.58</td></tr>
+                <tr><td>Estímulo de Puntualidad</td><td>$5,817.72</td></tr>
+                <tr><td>Bonificación Seguro Médico</td><td>$40.42</td></tr>
+                <tr><td>Ayuda de Despensa</td><td>$400.00</td></tr>
+                <tr><td>Atención Integral Continua</td><td>$3,860.30</td></tr>
+                <tr><td>Ayuda para Libros Médicos</td><td>$4,679.14</td></tr>
+                <tr><th class="pt-2">Deducciones mensuales</th><td></td></tr>
+                <tr><td>Deducciones</td><td>$16,389.50</td></tr>
+              </tbody>
+            </table>
+            <p class="benefit-note">
+              La cifra neta mensual considera todas las percepciones señaladas menos las deducciones aplicables.
+            </p>
+          </div>
+        </div>
 
+        <div class="col-lg-6">
+          <div class="benefit-card">
+            <h4>Percepciones anuales</h4>
+            <p class="mini-label mb-1">Compensaciones de fin de año y prestaciones</p>
+            <p class="amount-main">$195,120.93 MXN</p>
+            <table class="benefit-table mt-2">
+              <tbody>
+                <tr><th>Prestaciones anuales</th><td></td></tr>
+                <tr><td>Prima Vacacional</td><td>$6,031.30</td></tr>
+                <tr><td>Ayuda Actividades Culturales y Recreativas</td><td>$37,695.65</td></tr>
+                <tr><td>Aguinaldo</td><td>$125,313.42</td></tr>
+                <tr><td>Fondo de Ahorro</td><td>$33,840.25</td></tr>
+                <tr><th class="pt-2">Deducciones anuales</th><td></td></tr>
+                <tr><td>Deducciones</td><td>$7,759.69</td></tr>
+              </tbody>
+            </table>
+            <p class="benefit-note">
+              Además de este esquema, Baja California Sur es uno de los pocos estados del país donde las y los Médicos
+              Especialistas reciben un <strong>sobresueldo del 50% por Zona Aislada</strong>, lo que incrementa de manera
+              significativa el ingreso total mensual y anual. Sumado a los estímulos y apoyos, el paquete global es
+              altamente competitivo frente a otras entidades del país.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALIDAD DE VIDA -->
+  <section id="vida">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-lg-8">
+          <h2 class="section-title">Calidad de vida en Baja California Sur</h2>
+          <p class="section-subtitle">
+            Ejercer en Baja California Sur significa practicar la medicina en un entorno seguro, tranquilo y cercano a la
+            naturaleza, con ciudades funcionales y comunidades que favorecen la vida familiar.
+          </p>
+        </div>
+      </div>
+      <div class="row g-3 g-md-4">
+        <div class="col-md-4">
+          <div class="life-card">
+            <div class="life-icon">🛡️</div>
+            <h4>Seguridad y tranquilidad</h4>
+            <p>
+              BCS destaca por sus bajos índices delictivos y su ambiente social estable, ideal para quienes buscan
+              ejercer su profesión sin el estrés de la inseguridad cotidiana.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="life-card">
+            <div class="life-icon">🌊</div>
+            <h4>Naturaleza y mar</h4>
+            <p>
+              playas, desierto, montañas y vida marina única en el mundo. Terminar una guardia e ir al mar, caminar en el
+              malecón o disfrutar atardeceres espectaculares es parte de la rutina diaria.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="life-card">
+            <div class="life-icon">👨‍👩‍👧</div>
+            <h4>Entorno familiar</h4>
+            <p>
+              Comunidades seguras, servicios cercanos y espacios para el desarrollo académico, deportivo y cultural de
+              niñas, niños y adolescentes, con un ambiente de trato cordial y cercano.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="life-card">
+            <div class="life-icon">🚗</div>
+            <h4>Menos tráfico, menos estrés</h4>
+            <p>
+              Traslados cortos, vialidades fluidas y distancias razonables entre casa, escuela y hospital permiten un
+              mejor equilibrio entre la vida personal y laboral.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="life-card">
+            <div class="life-icon">✈️</div>
+            <h4>Conectividad aérea</h4>
+            <p>
+              Aeropuertos internacionales en La Paz y Los Cabos con vuelos frecuentes a las principales ciudades del país,
+              lo que facilita la conexión con familia, congresos y actividades académicas.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="life-card">
+            <div class="life-icon">🏄</div>
+            <h4>Recreación y bienestar</h4>
+            <p>
+              Actividades como senderismo, buceo, avistamiento de ballenas, deportes acuáticos y turismo de naturaleza
+              hacen de BCS un lugar ideal para quienes buscan bienestar físico y emocional.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA LOCALIDADES -->
+  <section id="localidades">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-lg-8">
+          <h2 class="section-title">Conoce las localidades donde están nuestras plazas</h2>
+          <p class="section-subtitle">
+            Cada localidad ofrece una combinación particular de servicios, tamaño de comunidad y estilo de vida, todas
+            dentro del entorno natural privilegiado de Baja California Sur.
+          </p>
+        </div>
+      </div>
+      <div class="row g-3 g-md-4">
+        <div class="col-md-4">
+          <div class="locality-card">
+            <div class="locality-image" style="background-image:linear-gradient(135deg,#0b3b30,#22c55e);"></div>
+            <div class="locality-body">
+              <div class="locality-tag">Capital del estado</div>
+              <div class="locality-name">La Paz</div>
+              <p>
+                Ciudad costera con malecón emblemático, servicios de alta especialidad, universidades y una vida
+                cotidiana tranquila, ideal para familias y para el desarrollo profesional continuo.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="locality-card">
+            <div class="locality-image" style="background-image:linear-gradient(135deg,#1d4ed8,#22c55e);"></div>
+            <div class="locality-body">
+              <div class="locality-tag">Corazón agrícola</div>
+              <div class="locality-name">Ciudad Constitución</div>
+              <p>
+                Comunidad estratégica en el valle agrícola del municipio de Comondú. Ofrece un ritmo de vida calmado,
+                costos accesibles y una fuerte vinculación con la población derechohabiente.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="locality-card">
+            <div class="locality-image" style="background-image:linear-gradient(135deg,#0f766e,#38bdf8);"></div>
+            <div class="locality-body">
+              <div class="locality-tag">Zona aislada</div>
+              <div class="locality-name">Guerrero Negro</div>
+              <p>
+                Localidad reconocida por sus salinas y por el avistamiento de ballena gris. Su carácter de zona aislada
+                se acompaña de estímulos económicos adicionales y una vida comunitaria cercana.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="locality-card">
+            <div class="locality-image" style="background-image:linear-gradient(135deg,#7c3aed,#22c55e);"></div>
+            <div class="locality-body">
+              <div class="locality-tag">Isla</div>
+              <div class="locality-name">Isla de Cedros</div>
+              <p>
+                Entorno insular con población compacta y fuerte sentido de comunidad. Representa un reto profesional y
+                una experiencia de vida única en contacto estrecho con la naturaleza.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="locality-card">
+            <div class="locality-image" style="background-image:linear-gradient(135deg,#b91c1c,#f97316);"></div>
+            <div class="locality-body">
+              <div class="locality-tag">Destino turístico</div>
+              <div class="locality-name">Cabo San Lucas</div>
+              <p>
+                Punto turístico internacional con amplia oferta de servicios, conectividad aérea y un sistema de salud
+                que atiende tanto a población residente como flotante.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="locality-card">
+            <div class="locality-image" style="background-image:linear-gradient(135deg,#1d4ed8,#22c55e);"></div>
+            <div class="locality-body">
+              <div class="locality-tag">Zona turística</div>
+              <div class="locality-name">San José del Cabo</div>
+              <p>
+                Ciudad con fuerte vocación turística y cultural, cercana al aeropuerto internacional de Los Cabos, con
+                servicios educativos y recreativos para toda la familia.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAZAS VACANTES -->
+  <section id="plazas">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-lg-8">
+          <h2 class="section-title">Plazas vacantes para Médicos Especialistas</h2>
+          <p class="section-subtitle">
+            A continuación se presentan las plazas disponibles por localidad y unidad médica. Todas las vacantes se
+            encuentran actualmente <strong>sin candidato</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- LA PAZ -->
+      <div class="location-wrapper location" data-location="La Paz">
+        <div class="location-header">
+          <div>
+            <div class="mini-label text-uppercase mb-1">Ubicación</div>
+            <div class="location-title">La Paz</div>
+          </div>
+          <div class="location-meta">
+            <span class="mini-label">Vacantes</span>
+            <span class="vacancies-count">0</span>
+            <span class="status">Sin candidato</span>
+          </div>
+        </div>
+
+        <!-- HGZ/MF 1 -->
+        <div class="unit-card">
+          <div class="unit-header">
+            <div class="unit-icon">🏥</div>
+            <div>
+              <div class="unit-name">Hosp. Gral. Zona MF 1</div>
+              <div class="unit-sub">La Paz, Baja California Sur</div>
+            </div>
+          </div>
+          <div class="vacancies-table-wrapper">
+            <table class="vacancies-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Especialidad</th>
+                  <th>Turno</th>
+                  <th>Tipo contrato</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="vacancy-row">
+                  <td>#638</td>
+                  <td class="specialty">Radiodiagnóstico</td>
+                  <td>Jornada Acumulada</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#680</td>
+                  <td class="specialty">Oncología Quirúrgica</td>
+                  <td>Matutino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#901</td>
+                  <td class="specialty">Otorrinolaringología</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#903</td>
+                  <td class="specialty">Oftalmología</td>
+                  <td>Matutino</td>
+                  <td>
+                    <span class="badge-contract badge-nodef">No Definitiva</span>
+                    <span class="badge-subtext">INDEFINIDO</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#3141</td>
+                  <td class="specialty">Gastroenterología</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#4613</td>
+                  <td class="specialty">Endoscopía</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#4617</td>
+                  <td class="specialty">Oncología Médica</td>
+                  <td>Matutino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#5129</td>
+                  <td class="specialty">Infectología</td>
+                  <td>Matutino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#9499</td>
+                  <td class="specialty">Urología</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#9505</td>
+                  <td class="specialty">Dermatología</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#9508</td>
+                  <td class="specialty">Nefrología</td>
+                  <td>Jornada Acumulada</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#9512</td>
+                  <td class="specialty">Neurología Pediátrica</td>
+                  <td>Matutino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#17664</td>
+                  <td class="specialty">Hemodinamia</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#17821</td>
+                  <td class="specialty">Radiodiagnóstico</td>
+                  <td>Matutino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#17825</td>
+                  <td class="specialty">Radiodiagnóstico</td>
+                  <td>Jornada Acumulada</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#18395</td>
+                  <td class="specialty">Alergia e Inmunología</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#18427</td>
+                  <td class="specialty">Proctología</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-def">Definitiva</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- UMF 34 ya incluida arriba porque unidades están por nombre, pero datos 4613/4617 son UMF 34.
+             Si quieres separarlos en otra tarjeta, puedes duplicar filas y reacomodarlas. -->
+      </div>
+
+      <!-- CIUDAD CONSTITUCIÓN -->
+      <div class="location-wrapper location" data-location="Cd. Constitución">
+        <div class="location-header">
+          <div>
+            <div class="mini-label text-uppercase mb-1">Ubicación</div>
+            <div class="location-title">Ciudad Constitución</div>
+          </div>
+          <div class="location-meta">
+            <span class="mini-label">Vacantes</span>
+            <span class="vacancies-count">0</span>
+            <span class="status">Sin candidato</span>
+          </div>
+        </div>
+
+        <!-- HGSZ/MF 2 -->
+        <div class="unit-card">
+          <div class="unit-header">
+            <div class="unit-icon">🏥</div>
+            <div>
+              <div class="unit-name">HGSZ/MF 2</div>
+              <div class="unit-sub">Ciudad Constitución, B.C.S.</div>
+            </div>
+          </div>
+          <div class="vacancies-table-wrapper">
+            <table class="vacancies-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Especialidad</th>
+                  <th>Turno</th>
+                  <th>Tipo contrato</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="vacancy-row">
+                  <td>#1157</td>
+                  <td class="specialty">Urgencias</td>
+                  <td>Matutino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#1159</td>
+                  <td class="specialty">Urgencias</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-nodef">No Definitiva</span>
+                    <span class="badge-subtext">INDEFINIDO</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#1173</td>
+                  <td class="specialty">Otorrinolaringología</td>
+                  <td>Matutino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#3405</td>
+                  <td class="specialty">Radiodiagnóstico</td>
+                  <td>Matutino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#4166</td>
+                  <td class="specialty">Ginecología y Obstetricia</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-nodef">No Definitiva</span>
+                    <span class="badge-subtext">INDEFINIDO</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#4168</td>
+                  <td class="specialty">Radiodiagnóstico</td>
+                  <td>Vespertino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#6271</td>
+                  <td class="specialty">Medicina Interna</td>
+                  <td>Jornada Acumulada</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- GUERRERO NEGRO -->
+      <div class="location-wrapper location" data-location="Guerrero Negro">
+        <div class="location-header">
+          <div>
+            <div class="mini-label text-uppercase mb-1">Ubicación</div>
+            <div class="location-title">Guerrero Negro</div>
+          </div>
+          <div class="location-meta">
+            <span class="mini-label">Vacantes</span>
+            <span class="vacancies-count">0</span>
+            <span class="status">Sin candidato</span>
+          </div>
+        </div>
+
+        <!-- HGSZ/MF 5 -->
+        <div class="unit-card">
+          <div class="unit-header">
+            <div class="unit-icon">🏥</div>
+            <div>
+              <div class="unit-name">HGSZ/MF 5</div>
+              <div class="unit-sub">Guerrero Negro, B.C.S.</div>
+            </div>
+          </div>
+          <div class="vacancies-table-wrapper">
+            <table class="vacancies-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Especialidad</th>
+                  <th>Turno</th>
+                  <th>Tipo contrato</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="vacancy-row">
+                  <td>#1376</td>
+                  <td class="specialty">Pediatría Médica</td>
+                  <td>Vespertino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#1377</td>
+                  <td class="specialty">Pediatría Médica</td>
+                  <td>Matutino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#1378</td>
+                  <td class="specialty">Traumatología y Ortopedia</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-nodef">No Definitiva</span>
+                    <span class="badge-subtext">INDEFINIDO</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#1380</td>
+                  <td class="specialty">Cirugía General</td>
+                  <td>Nocturno</td>
+                  <td>
+                    <span class="badge-contract badge-nodef">No Definitiva</span>
+                    <span class="badge-subtext">28/02/2027</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#1388</td>
+                  <td class="specialty">Otorrinolaringología</td>
+                  <td>Vespertino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#1392</td>
+                  <td class="specialty">Medicina Interna</td>
+                  <td>Vespertino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#1396</td>
+                  <td class="specialty">Oftalmología</td>
+                  <td>Matutino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#1402</td>
+                  <td class="specialty">Pediatría Médica</td>
+                  <td>Jornada Acumulada</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#3406</td>
+                  <td class="specialty">Radiodiagnóstico</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-nodef">No Definitiva</span>
+                    <span class="badge-subtext">28/02/2029</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#5191</td>
+                  <td class="specialty">Medicina Interna</td>
+                  <td>Jornada Acumulada</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#6596</td>
+                  <td class="specialty">Pediatría Médica</td>
+                  <td>Nocturno</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#6597</td>
+                  <td class="specialty">Pediatría Médica</td>
+                  <td>Nocturno</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#6598</td>
+                  <td class="specialty">Ginecología y Obstetricia</td>
+                  <td>Nocturno</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#6599</td>
+                  <td class="specialty">Ginecología y Obstetricia</td>
+                  <td>Nocturno</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#8600</td>
+                  <td class="specialty">Radiodiagnóstico</td>
+                  <td>Vespertino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ISLA DE CEDROS -->
+      <div class="location-wrapper location" data-location="Isla de Cedros">
+        <div class="location-header">
+          <div>
+            <div class="mini-label text-uppercase mb-1">Ubicación</div>
+            <div class="location-title">Isla de Cedros</div>
+          </div>
+          <div class="location-meta">
+            <span class="mini-label">Vacantes</span>
+            <span class="vacancies-count">0</span>
+            <span class="status">Sin candidato</span>
+          </div>
+        </div>
+
+        <!-- HGSZ/MF 13 -->
+        <div class="unit-card">
+          <div class="unit-header">
+            <div class="unit-icon">🏥</div>
+            <div>
+              <div class="unit-name">HGSZ/MF 13</div>
+              <div class="unit-sub">Isla de Cedros, B.C.S.</div>
+            </div>
+          </div>
+          <div class="vacancies-table-wrapper">
+            <table class="vacancies-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Especialidad</th>
+                  <th>Turno</th>
+                  <th>Tipo contrato</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="vacancy-row">
+                  <td>#1672</td>
+                  <td class="specialty">Cirugía General</td>
+                  <td>Matutino</td>
+                  <td>
+                    <span class="badge-contract badge-nodef">No Definitiva</span>
+                    <span class="badge-subtext">28/02/2027</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#4206</td>
+                  <td class="specialty">Ginecología y Obstetricia</td>
+                  <td>Vespertino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#4207</td>
+                  <td class="specialty">Pediatría Médica</td>
+                  <td>Matutino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- CABO SAN LUCAS -->
+      <div class="location-wrapper location" data-location="Cabo San Lucas">
+        <div class="location-header">
+          <div>
+            <div class="mini-label text-uppercase mb-1">Ubicación</div>
+            <div class="location-title">Cabo San Lucas</div>
+          </div>
+          <div class="location-meta">
+            <span class="mini-label">Vacantes</span>
+            <span class="vacancies-count">0</span>
+            <span class="status">Sin candidato</span>
+          </div>
+        </div>
+
+        <!-- HGSZ/MF 26 -->
+        <div class="unit-card">
+          <div class="unit-header">
+            <div class="unit-icon">🏥</div>
+            <div>
+              <div class="unit-name">HGSZ/MF 26</div>
+              <div class="unit-sub">Cabo San Lucas, B.C.S.</div>
+            </div>
+          </div>
+          <div class="vacancies-table-wrapper">
+            <table class="vacancies-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Especialidad</th>
+                  <th>Turno</th>
+                  <th>Tipo contrato</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="vacancy-row">
+                  <td>#1809</td>
+                  <td class="specialty">Medicina Interna</td>
+                  <td>Vespertino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#2294</td>
+                  <td class="specialty">Ginecología y Obstetricia</td>
+                  <td>Vespertino</td>
+                  <td>
+                    <span class="badge-contract badge-nodef">No Definitiva</span>
+                    <span class="badge-subtext">INDEFINIDO</span>
+                  </td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#6305</td>
+                  <td class="specialty">Medicina Interna</td>
+                  <td>Vespertino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#8542</td>
+                  <td class="specialty">Pediatría en Urgencias</td>
+                  <td>Nocturno</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#8543</td>
+                  <td class="specialty">Pediatría en Urgencias</td>
+                  <td>Nocturno</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAN JOSÉ DEL CABO -->
+      <div class="location-wrapper location" data-location="San José del Cabo">
+        <div class="location-header">
+          <div>
+            <div class="mini-label text-uppercase mb-1">Ubicación</div>
+            <div class="location-title">San José del Cabo</div>
+          </div>
+          <div class="location-meta">
+            <span class="mini-label">Vacantes</span>
+            <span class="vacancies-count">0</span>
+            <span class="status">Sin candidato</span>
+          </div>
+        </div>
+
+        <!-- HGSZ 38 -->
+        <div class="unit-card">
+          <div class="unit-header">
+            <div class="unit-icon">🏥</div>
+            <div>
+              <div class="unit-name">HGSZ 38</div>
+              <div class="unit-sub">San José del Cabo, B.C.S.</div>
+            </div>
+          </div>
+          <div class="vacancies-table-wrapper">
+            <table class="vacancies-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Especialidad</th>
+                  <th>Turno</th>
+                  <th>Tipo contrato</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="vacancy-row">
+                  <td>#5674</td>
+                  <td class="specialty">Radiodiagnóstico</td>
+                  <td>Vespertino</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#18460</td>
+                  <td class="specialty">Pediatría Médica</td>
+                  <td>Nocturno</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+                <tr class="vacancy-row">
+                  <td>#18463</td>
+                  <td class="specialty">Pediatría Médica</td>
+                  <td>Nocturno</td>
+                  <td><span class="badge-contract badge-def">Definitiva</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="cta-box">
+            <h3>Da el siguiente paso en tu carrera como Médico Especialista</h3>
+            <p>
+              Elegir Baja California Sur es elegir estabilidad, seguridad y una vida plena. Aquí encontrarás uno de los
+              paquetes económicos más competitivos del país, ambientes laborales seguros y una calidad de vida
+              extraordinaria. Si eres Médico Especialista, aquí no solo tendrás un trabajo: tendrás futuro, tendrás paz y
+              tendrás calidad de vida.
+            </p>
+            <p class="mb-3">
+              Si deseas más información sobre el proceso de asignación de plazas, requisitos o detalles específicos de
+              cada localidad, puedes escribirnos:
+            </p>
+            <p class="mb-0">
+              <a href="mailto:reclutamiento.medicos.bcs@example.com" class="cta-mail">
+                reclutamiento.medicos.bcs@example.com
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    IMSS Baja California Sur · Información ilustrativa para fines de reclutamiento de Médicos Especialistas.
+  </footer>
+
+  <!-- JS (Bootstrap + lógica mínima) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+          crossorigin="anonymous"></script>
   <script>
-    // ---------------------------
-    // Control de pasos
-    // ---------------------------
-    let currentStep = 1;
-    const totalSteps = 3;
+    // Contar vacantes por ubicación
+    document.querySelectorAll(".location").forEach(function (loc) {
+      var count = loc.querySelectorAll(".vacancy-row").length;
+      var span = loc.querySelector(".vacancies-count");
+      if (span) span.textContent = count;
+    });
 
-    const steps = document.querySelectorAll(".step");
-    const dots = document.querySelectorAll(".step-dot");
-
-    function showStep(step) {
-      currentStep = step;
-      steps.forEach(section => {
-        const stepNum = Number(section.getAttribute("data-step"));
-        section.classList.toggle("active", stepNum === step);
+    // Resaltar enlace activo al hacer scroll suave
+    const navLinks = document.querySelectorAll(".navbar-custom .nav-link");
+    navLinks.forEach(link => {
+      link.addEventListener("click", function (e) {
+        const targetId = this.getAttribute("href");
+        if (targetId.startsWith("#")) {
+          e.preventDefault();
+          const targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            window.scrollTo({
+              top: targetEl.offsetTop - 70,
+              behavior: "smooth"
+            });
+          }
+        }
       });
-
-      dots.forEach(dot => {
-        const stepNum = Number(dot.getAttribute("data-step-dot"));
-        dot.classList.toggle("active", stepNum === step);
-      });
-    }
-
-    // ---------------------------
-    // Validaciones básicas
-    // ---------------------------
-    function validateStep1() {
-      const edad = Number(document.getElementById("edad").value);
-      const errorBox = document.getElementById("error-step1");
-      errorBox.textContent = "";
-
-      if (!edad || edad < 18 || edad > 90) {
-        errorBox.textContent = "Ingresa una edad válida (entre 18 y 90 años).";
-        return false;
-      }
-      return true;
-    }
-
-    function validateStep2() {
-      const ingresoMensualNeto = Number(
-        document.getElementById("ingreso-mensual-neto").value
-      );
-      const ahorroMensual = Number(
-        document.getElementById("ahorro-mensual").value
-      );
-      const errorBox = document.getElementById("error-step2");
-      errorBox.textContent = "";
-
-      if (!ingresoMensualNeto || ingresoMensualNeto <= 0) {
-        errorBox.textContent =
-          "Ingresa tu ingreso mensual NETO (mayor a 0).";
-        return false;
-      }
-      if (!ahorroMensual || ahorroMensual <= 0) {
-        errorBox.textContent =
-          "Ingresa el ahorro mensual destinado a HTRNL (mayor a 0).";
-        return false;
-      }
-      if (ahorroMensual > ingresoMensualNeto) {
-        errorBox.textContent =
-          "El ahorro mensual no puede ser mayor que tu ingreso mensual neto.";
-        return false;
-      }
-      return true;
-    }
-
-    // ---------------------------
-    // Formateo de moneda
-    // ---------------------------
-    function formatMoney(value) {
-      if (!value && value !== 0) return "-";
-      const num = Number(value);
-      if (Number.isNaN(num)) return "-";
-      return "$" + num.toLocaleString("es-MX", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-    }
-
-    // ---------------------------
-    // Construir el resumen
-    // ---------------------------
-    function buildResume() {
-      const nombre = document.getElementById("nombre").value.trim() || "Sin nombre";
-      const edad = document.getElementById("edad").value;
-
-      const ingresoMensualNeto = document.getElementById("ingreso-mensual-neto").value;
-      const ingresoMensualBruto = document.getElementById("ingreso-mensual-bruto").value;
-      const percepcionesAnuales = document.getElementById("percepciones-anuales").value;
-      const ahorroMensual = document.getElementById("ahorro-mensual").value;
-
-      // IMPORTANTE: aquí solo mostramos, NO calculamos nada extra
-      const resumeCard = document.getElementById("resume-card");
-      resumeCard.innerHTML = `
-        <div class="resume-row">
-          <span class="resume-label">Nombre:</span>
-          <span class="resume-value">${nombre}</span>
-        </div>
-        <div class="resume-row">
-          <span class="resume-label">Edad:</span>
-          <span class="resume-value">${edad || "-"} años</span>
-        </div>
-        <div class="resume-row">
-          <span class="resume-label">Ingreso mensual NETO:</span>
-          <span class="resume-value">${formatMoney(ingresoMensualNeto)}</span>
-        </div>
-        <div class="resume-row">
-          <span class="resume-label">Ingreso mensual BRUTO:</span>
-          <span class="resume-value">${ingresoMensualBruto ? formatMoney(ingresoMensualBruto) : "-"}</span>
-        </div>
-        <div class="resume-row">
-          <span class="resume-label">Percepciones anuales:</span>
-          <span class="resume-value">${percepcionesAnuales ? formatMoney(percepcionesAnuales) : "-"}</span>
-        </div>
-        <div class="resume-row">
-          <span class="resume-label">Ahorro mensual HTRNL:</span>
-          <span class="resume-value">${formatMoney(ahorroMensual)}</span>
-        </div>
-      `;
-    }
-
-    // ---------------------------
-    // Listeners de botones
-    // ---------------------------
-    document.getElementById("btn-step1-next").addEventListener("click", () => {
-      if (validateStep1()) {
-        showStep(2);
-      }
-    });
-
-    document.getElementById("btn-step2-prev").addEventListener("click", () => {
-      showStep(1);
-    });
-
-    document.getElementById("btn-step2-next").addEventListener("click", () => {
-      if (validateStep2()) {
-        buildResume();
-        showStep(3);
-      }
-    });
-
-    document.getElementById("btn-step3-prev").addEventListener("click", () => {
-      showStep(2);
-    });
-
-    document.getElementById("btn-finalizar").addEventListener("click", () => {
-      alert("Datos registrados. Esta versión solo muestra tu información, sin cálculos adicionales.");
     });
   </script>
 </body>
