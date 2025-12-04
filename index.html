@@ -255,12 +255,27 @@
     }
     .locality-img {
       height: 180px;
-      background-size: cover;
-      background-position: center;
       position: relative;
+      background: radial-gradient(circle at top left, #0ea5e9, #0369a1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .locality-img-label {
+      background: rgba(15, 23, 42, 0.75);
+      color: #f9fafb;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .locality-img-label span.icon {
+      font-size: 1.1rem;
     }
     .locality-img::after {
-      content: "Imagen referencial";
+      content: "Vista ilustrativa · consulta fotos reales en el enlace";
       position: absolute;
       bottom: 0.4rem;
       right: 0.6rem;
@@ -268,7 +283,7 @@
       border-radius: 999px;
       background-color: rgba(0, 0, 0, 0.45);
       color: #f9fafb;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
     }
     .locality-body {
       padding: 1.2rem 1.25rem 1.35rem;
@@ -818,10 +833,12 @@
         <!-- La Paz -->
         <div class="col-md-6 col-lg-4">
           <div class="locality-card">
-            <div
-              class="locality-img"
-              style="background-image: url('https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&w=900&q=80');"
-            ></div>
+            <div class="locality-img">
+              <div class="locality-img-label">
+                <span class="icon">📍</span>
+                <span>La Paz, BCS</span>
+              </div>
+            </div>
             <div class="locality-body">
               <h5>La Paz</h5>
               <p>
@@ -833,7 +850,7 @@
                 href="https://www.google.com/search?q=La+Paz+Baja+California+Sur&tbm=isch"
                 target="_blank"
                 rel="noopener noreferrer"
-                >Ver fotos de La Paz en Google Imágenes ↗</a
+                >Ver fotos reales de La Paz en Google Imágenes ↗</a
               >
             </div>
           </div>
@@ -841,10 +858,12 @@
         <!-- Cd. Constitución -->
         <div class="col-md-6 col-lg-4">
           <div class="locality-card">
-            <div
-              class="locality-img"
-              style="background-image: url('https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=900&q=80');"
-            ></div>
+            <div class="locality-img">
+              <div class="locality-img-label">
+                <span class="icon">📍</span>
+                <span>Ciudad Constitución, BCS</span>
+              </div>
+            </div>
             <div class="locality-body">
               <h5>Ciudad Constitución</h5>
               <p>
@@ -856,7 +875,7 @@
                 href="https://www.google.com/search?q=Ciudad+Constituci%C3%B3n+Baja+California+Sur&tbm=isch"
                 target="_blank"
                 rel="noopener noreferrer"
-                >Ver fotos de Ciudad Constitución ↗</a
+                >Ver fotos reales de Ciudad Constitución ↗</a
               >
             </div>
           </div>
@@ -864,10 +883,12 @@
         <!-- Guerrero Negro -->
         <div class="col-md-6 col-lg-4">
           <div class="locality-card">
-            <div
-              class="locality-img"
-              style="background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80');"
-            ></div>
+            <div class="locality-img">
+              <div class="locality-img-label">
+                <span class="icon">📍</span>
+                <span>Guerrero Negro, BCS</span>
+              </div>
+            </div>
             <div class="locality-body">
               <h5>Guerrero Negro</h5>
               <p>
@@ -880,7 +901,7 @@
                 href="https://www.google.com/search?q=Guerrero+Negro+Baja+California+Sur&tbm=isch"
                 target="_blank"
                 rel="noopener noreferrer"
-                >Ver fotos de Guerrero Negro ↗</a
+                >Ver fotos reales de Guerrero Negro ↗</a
               >
             </div>
           </div>
@@ -888,10 +909,12 @@
         <!-- Isla de Cedros -->
         <div class="col-md-6 col-lg-4">
           <div class="locality-card">
-            <div
-              class="locality-img"
-              style="background-image: url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=900&q=80');"
-            ></div>
+            <div class="locality-img">
+              <div class="locality-img-label">
+                <span class="icon">📍</span>
+                <span>Isla de Cedros, BCS</span>
+              </div>
+            </div>
             <div class="locality-body">
               <h5>Isla de Cedros</h5>
               <p>
@@ -903,7 +926,7 @@
                 href="https://www.google.com/search?q=Isla+de+Cedros+BCS&tbm=isch"
                 target="_blank"
                 rel="noopener noreferrer"
-                >Ver fotos de Isla de Cedros ↗</a
+                >Ver fotos reales de Isla de Cedros ↗</a
               >
             </div>
           </div>
@@ -911,10 +934,12 @@
         <!-- Cabo San Lucas -->
         <div class="col-md-6 col-lg-4">
           <div class="locality-card">
-            <div
-              class="locality-img"
-              style="background-image: url('https://images.unsplash.com/photo-1504274066651-8d31a536b11a?auto=format&fit=crop&w=900&q=80');"
-            ></div>
+            <div class="locality-img">
+              <div class="locality-img-label">
+                <span class="icon">📍</span>
+                <span>Cabo San Lucas, BCS</span>
+              </div>
+            </div>
             <div class="locality-body">
               <h5>Cabo San Lucas</h5>
               <p>
@@ -927,7 +952,7 @@
                 href="https://www.google.com/search?q=Cabo+San+Lucas+Baja+California+Sur&tbm=isch"
                 target="_blank"
                 rel="noopener noreferrer"
-                >Ver fotos de Cabo San Lucas ↗</a
+                >Ver fotos reales de Cabo San Lucas ↗</a
               >
             </div>
           </div>
@@ -935,10 +960,12 @@
         <!-- San José del Cabo -->
         <div class="col-md-6 col-lg-4">
           <div class="locality-card">
-            <div
-              class="locality-img"
-              style="background-image: url('https://images.unsplash.com/photo-1494797710133-75adf6c1f4a3?auto=format&fit=crop&w=900&q=80');"
-            ></div>
+            <div class="locality-img">
+              <div class="locality-img-label">
+                <span class="icon">📍</span>
+                <span>San José del Cabo, BCS</span>
+              </div>
+            </div>
             <div class="locality-body">
               <h5>San José del Cabo</h5>
               <p>
@@ -950,7 +977,7 @@
                 href="https://www.google.com/search?q=San+Jos%C3%A9+del+Cabo+Baja+California+Sur&tbm=isch"
                 target="_blank"
                 rel="noopener noreferrer"
-                >Ver fotos de San José del Cabo ↗</a
+                >Ver fotos reales de San José del Cabo ↗</a
               >
             </div>
           </div>
@@ -1074,7 +1101,6 @@
 
     const locationsContainer = document.getElementById("locations-container");
 
-    // Utilidades
     function groupBy(array, key) {
       return array.reduce((acc, item) => {
         const k = item[key];
@@ -1082,10 +1108,6 @@
         acc[k].push(item);
         return acc;
       }, {});
-    }
-
-    function turnoLabel(turno) {
-      return turno;
     }
 
     function renderLocations() {
@@ -1151,9 +1173,7 @@
             const tipoContrato = v.definitiva
               ? `<span class="badge-contract badge-definitiva">Definitiva</span>`
               : `<span class="badge-contract badge-nodef">No definitiva</span>${
-                  v.termino
-                    ? `<div class="contract-term">${v.termino}</div>`
-                    : ""
+                  v.termino ? `<div class="contract-term">${v.termino}</div>` : ""
                 }`;
 
             tr.innerHTML = `
@@ -1161,7 +1181,7 @@
               <td>
                 <span class="turno-pill">
                   <span class="icon">⏱️</span>
-                  <span>${turnoLabel(v.turno)}</span>
+                  <span>${v.turno}</span>
                 </span>
               </td>
               <td>${tipoContrato}</td>
